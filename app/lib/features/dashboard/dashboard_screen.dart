@@ -86,8 +86,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildHeader(DateTime now) {
+    final topPadding = MediaQuery.of(context).padding.top;
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
+      padding: EdgeInsets.fromLTRB(20, topPadding + 8, 12, 12),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFFFF6B6B), Color(0xFFFFB347)],
