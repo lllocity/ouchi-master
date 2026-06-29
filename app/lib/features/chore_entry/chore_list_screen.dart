@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/app_database.dart';
 import '../../core/providers.dart';
+import '../../shared/widgets/point_toast.dart';
 
 class ChoreListScreen extends ConsumerWidget {
   final ChildrenData child;
@@ -49,6 +50,15 @@ class ChoreListScreen extends ConsumerWidget {
       );
       // ダッシュボードまで全部戻る
       navigator.popUntil((route) => route.isFirst);
+      // トーストはダッシュボードに戻った後に表示
+      if (context.mounted) {
+        showPointToast(
+          context,
+          childName: child.name,
+          choreName: t.name,
+          points: t.points,
+        );
+      }
     }
   }
 
