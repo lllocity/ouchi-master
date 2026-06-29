@@ -86,18 +86,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildHeader(DateTime now) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text('🏠 ouchi-master',
+          const Text('🏠 おうちマスター',
               style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold)),
+                  fontSize: 24, fontWeight: FontWeight.bold)),
           const Spacer(),
           Text('${now.year}年${now.month}月',
-              style: const TextStyle(fontSize: 16)),
+              style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 4),
           IconButton(
-            icon: const Icon(Icons.history),
+            icon: const Icon(Icons.history, size: 28),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -105,7 +107,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
+            icon: const Icon(Icons.settings_outlined, size: 28),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
