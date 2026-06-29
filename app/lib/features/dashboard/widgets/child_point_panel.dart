@@ -59,11 +59,10 @@ class _ChildPointPanelState extends ConsumerState<ChildPointPanel> {
             children: [
               Text(widget.child.name,
                   style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold)),
+                      fontSize: 28, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               pointsAsync.when(
                 data: (pts) {
-                  // 加点されたとき紙吹雪を起動
                   if (_prevPoints != null &&
                       pts > _prevPoints! &&
                       mounted) {
@@ -73,7 +72,7 @@ class _ChildPointPanelState extends ConsumerState<ChildPointPanel> {
                   return AnimatedPointCounter(
                     points: pts,
                     style: TextStyle(
-                        fontSize: 44,
+                        fontSize: 52,
                         fontWeight: FontWeight.bold,
                         color: _color),
                   );
@@ -81,15 +80,14 @@ class _ChildPointPanelState extends ConsumerState<ChildPointPanel> {
                 loading: () => const CircularProgressIndicator(),
                 error: (_, __) => const Text('エラー'),
               ),
-              const Text('今月の合計',
-                  style:
-                      TextStyle(color: Colors.grey, fontSize: 12)),
-              const Divider(height: 20),
+              const Text('今月のごうけい',
+                  style: TextStyle(color: Colors.grey, fontSize: 15)),
+              const Divider(height: 24),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('📋 直近のきろく',
+                child: Text('📋 さいきんのきろく',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13)),
+                        fontWeight: FontWeight.bold, fontSize: 17)),
               ),
               const SizedBox(height: 4),
               logsAsync.when(

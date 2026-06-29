@@ -13,9 +13,9 @@ class ActivityLogList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (logs.isEmpty) {
       return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text('まだきろくがありません',
-            style: TextStyle(color: Colors.grey, fontSize: 13)),
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: Text('まだきろくがないよ',
+            style: TextStyle(color: Colors.grey, fontSize: 15)),
       );
     }
     return Column(
@@ -54,21 +54,21 @@ class ActivityLogList extends ConsumerWidget {
             child: const Icon(Icons.delete, color: Colors.white),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Row(
               children: [
                 Text(_fmt(log.recordedAt),
                     style: const TextStyle(
-                        fontSize: 11, color: Colors.grey)),
-                const SizedBox(width: 6),
+                        fontSize: 13, color: Colors.grey)),
+                const SizedBox(width: 8),
                 Expanded(
                     child: Text(log.choreName,
-                        style: const TextStyle(fontSize: 13),
+                        style: const TextStyle(fontSize: 15),
                         overflow: TextOverflow.ellipsis)),
                 Text(
                   '${neg ? '' : '+'}${log.points}P',
                   style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: neg ? Colors.red : Colors.green),
                 ),
