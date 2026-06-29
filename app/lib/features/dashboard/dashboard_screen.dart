@@ -1,13 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/providers.dart';
+import '../chore_entry/chore_entry_screen.dart';
+import 'widgets/child_point_panel.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  bool _pressing = false;
+
+  void _onLongPressStart(LongPressStartDetails _) {
+    setState(() => _pressing = true);
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!_pressing || !mounted) return;
+      setState(() => _pressing = false);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (_) => const ChoreEntryScreen(),
+        ),
+      );
+    });
+  }
+
+  void _cancelPress() => setState(() => _pressing = false);
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('ダッシュボード（準備中）',
-          style: TextStyle(fontSize: 24))),
+    final now = DateTime.now();
+    final childrenAsync = ref.watch(childrenProvider);
+
+    return Scaffold(
+      body: GestureDetector(
+        onLongPressStart: _onLongPressStart,
+        onLongPressEnd: (_) => _cancelPress(),
+        onLongPressCancel: _cancelPress,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                _buildHeader(now),
+                Expanded(
+                  child: childrenAsync.when(
+                    data: (children) => Row(
+                      children: children
+                          .map((c) =>
+                              Expanded(child: ChildPointPanel(child: c)))
+                          .toList(),
+                    ),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (e, _) =>
+                        Center(child: Text('エラー: $e')),
+                  ),
+                ),
+              ],
+            ),
+            if (_pressing)
+              const Positioned.fill(
+                child: IgnorePointer(
+                  child: ColoredBox(
+                    color: Color(0x44000000),
+                    child: Center(
+                      child: Text('そのまま持ちつづけて…',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(DateTime now) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          const Text('🏠 ouchi-master',
+              style: TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.bold)),
+          const Spacer(),
+          Text('${now.year}年${now.month}月',
+              style: const TextStyle(fontSize: 16)),
+        ],
+      ),
     );
   }
 }
