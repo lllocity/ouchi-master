@@ -113,13 +113,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                        color: Color(0x44000000),
-                        offset: Offset(1, 1),
-                        blurRadius: 3),
-                  ])),
+                  color: Colors.white)),
           const Spacer(),
           Text('${now.month}月',
               style: const TextStyle(
