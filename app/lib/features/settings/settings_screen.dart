@@ -22,11 +22,18 @@ class SettingsScreen extends ConsumerWidget {
             data: (children) => Column(
               children: [
                 ...children.map((c) => _ChildTile(child: c)),
-                ListTile(
-                  leading: const Icon(Icons.add),
-                  title: const Text('子どもを追加'),
-                  onTap: () => _showAddChildDialog(context, ref),
-                ),
+                if (children.length < 4)
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: const Text('子どもを追加'),
+                    onTap: () => _showAddChildDialog(context, ref),
+                  )
+                else
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text('上限は4人までです',
+                        style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  ),
               ],
             ),
             loading: () => const LinearProgressIndicator(),
@@ -98,9 +105,51 @@ class _ChildTile extends ConsumerWidget {
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
       title: Text(child.name),
-      trailing: IconButton(
-        icon: const Icon(Icons.edit_outlined),
-        onPressed: () => _showEditDialog(context, ref),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => _showEditDialog(context, ref),
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            onPressed: () => _showDeleteDialog(context, ref),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('${child.name} を削除しますか？'),
+        content: const Text('きろくもすべて削除されます。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('キャンセル'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            onPressed: () async {
+              final db = ref.read(databaseProvider);
+              // まずきろくをソフトデリート
+              await (db.update(db.activityLogs)
+                    ..where((l) => l.childId.equals(child.id)))
+                  .write(ActivityLogsCompanion(
+                      deletedAt: Value(DateTime.now())));
+              // 子どもを削除
+              await (db.delete(db.children)
+                    ..where((c) => c.id.equals(child.id)))
+                  .go();
+              if (ctx.mounted) Navigator.pop(ctx);
+            },
+            child: const Text('削除する'),
+          ),
+        ],
       ),
     );
   }

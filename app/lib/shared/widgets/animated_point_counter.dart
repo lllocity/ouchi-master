@@ -48,7 +48,7 @@ class _AnimatedPointCounterState extends State<AnimatedPointCounter>
       builder: (_, __) {
         final cur =
             (_from + _anim.value * (widget.points - _from)).round();
-        return Text('★ $cur P ★', style: widget.style);
+        return Text('$cur P', style: widget.style);
       },
     );
   }
