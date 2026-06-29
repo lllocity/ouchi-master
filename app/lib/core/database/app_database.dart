@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'daos/activity_logs_dao.dart';
 
 part 'app_database.g.dart';
 
@@ -47,6 +48,8 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  late final activityLogsDao = ActivityLogsDao(this);
 }
 
 AppDatabase openAppDatabase() => AppDatabase(_openConnection());
