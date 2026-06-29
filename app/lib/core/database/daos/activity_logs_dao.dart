@@ -41,6 +41,36 @@ class ActivityLogsDao extends DatabaseAccessor<AppDatabase>
         .watch();
   }
 
+  // 今月のきろく一覧（リアルタイム）
+  Stream<List<ActivityLog>> watchCurrentMonthByChild(int childId) {
+    final now = DateTime.now();
+    final monthStart = DateTime(now.year, now.month, 1);
+    return (select(activityLogs)
+          ..where((l) =>
+              l.childId.equals(childId) &
+              l.deletedAt.isNull() &
+              l.recordedAt.isBiggerOrEqualValue(monthStart))
+          ..orderBy([(l) => OrderingTerm.desc(l.recordedAt)]))
+        .watch();
+  }
+
+  // 先月のポイント合計
+  Future<int> getLastMonthPoints(int childId) async {
+    final now = DateTime.now();
+    final lastMonthStart = DateTime(now.year, now.month - 1, 1);
+    final thisMonthStart = DateTime(now.year, now.month, 1);
+    final result = await (selectOnly(activityLogs)
+          ..addColumns([activityLogs.points.sum()])
+          ..where(activityLogs.childId.equals(childId) &
+              activityLogs.recordedAt
+                  .isBiggerOrEqualValue(lastMonthStart) &
+              activityLogs.recordedAt
+                  .isSmallerThanValue(thisMonthStart) &
+              activityLogs.deletedAt.isNull()))
+        .getSingle();
+    return result.read(activityLogs.points.sum()) ?? 0;
+  }
+
   Future<void> softDelete(int logId) async {
     await (update(activityLogs)..where((l) => l.id.equals(logId)))
         .write(ActivityLogsCompanion(

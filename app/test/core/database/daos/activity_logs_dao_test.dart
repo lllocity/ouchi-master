@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ouchi_master/core/database/app_database.dart';
@@ -42,6 +43,31 @@ void main() {
     final points =
         await db.activityLogsDao.watchCurrentMonthPoints(childId).first;
     expect(points, equals(0));
+  });
+
+  test('watchCurrentMonthByChild は今月のログのみ返す', () async {
+    await db.activityLogsDao.insertLog(ActivityLogsCompanion.insert(
+        childId: childId, choreName: '今月', points: 30));
+    final logs =
+        await db.activityLogsDao.watchCurrentMonthByChild(childId).first;
+    expect(logs.length, equals(1));
+    expect(logs.first.choreName, equals('今月'));
+  });
+
+  test('getLastMonthPoints は先月のポイント合計を返す', () async {
+    // 先月のログを直接挿入（recordedAt を先月に設定）
+    final now = DateTime.now();
+    final lastMonth = DateTime(now.year, now.month - 1, 15);
+    await db.into(db.activityLogs).insert(
+      ActivityLogsCompanion.insert(
+        childId: childId,
+        choreName: '先月のきろく',
+        points: 100,
+        recordedAt: Value(lastMonth),
+      ),
+    );
+    final pts = await db.activityLogsDao.getLastMonthPoints(childId);
+    expect(pts, equals(100));
   });
 
   test('watchRecentByChild は削除済みログを除外する', () async {

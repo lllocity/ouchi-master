@@ -42,7 +42,9 @@ class _ChildPointPanelState extends ConsumerState<ChildPointPanel> {
     final pointsAsync =
         ref.watch(currentMonthPointsProvider(widget.child.id));
     final logsAsync =
-        ref.watch(recentActivitiesProvider(widget.child.id));
+        ref.watch(currentMonthActivitiesProvider(widget.child.id));
+    final lastMonthAsync =
+        ref.watch(lastMonthPointsProvider(widget.child.id));
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -82,10 +84,27 @@ class _ChildPointPanelState extends ConsumerState<ChildPointPanel> {
               ),
               const Text('今月のごうけい',
                   style: TextStyle(color: Colors.grey, fontSize: 15)),
+              // 先月のごうけい（先月にきろくがある場合だけ表示）
+              lastMonthAsync.when(
+                data: (lastPts) => lastPts > 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          '先月は ${lastPts}P だったよ！おつかれさま 🎉',
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: _color.withValues(alpha: 0.7),
+                              fontStyle: FontStyle.italic),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
               const Divider(height: 24),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('📋 さいきんのきろく',
+                child: Text('📋 今月のきろく',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 17)),
               ),

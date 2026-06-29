@@ -46,7 +46,20 @@ final currentMonthPointsProvider =
 /// 子ども別・直近10件のきろく（リアルタイム）
 final recentActivitiesProvider =
     StreamProvider.family<List<ActivityLog>, int>((ref, childId) {
-
   final db = ref.watch(databaseProvider);
   return db.activityLogsDao.watchRecentByChild(childId);
+});
+
+/// 子ども別・今月のきろく全件（リアルタイム）
+final currentMonthActivitiesProvider =
+    StreamProvider.family<List<ActivityLog>, int>((ref, childId) {
+  final db = ref.watch(databaseProvider);
+  return db.activityLogsDao.watchCurrentMonthByChild(childId);
+});
+
+/// 子ども別・先月のポイント合計
+final lastMonthPointsProvider =
+    FutureProvider.family<int, int>((ref, childId) {
+  final db = ref.watch(databaseProvider);
+  return db.activityLogsDao.getLastMonthPoints(childId);
 });
