@@ -44,11 +44,11 @@ class _ChoreEntryScreenState extends ConsumerState<ChoreEntryScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(32, 48, 32, 24),
+        child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // ── だれが？ ──────────────────────────────
               const Text('だれが？',
@@ -162,3 +162,4 @@ class _ChoreEntryScreenState extends ConsumerState<ChoreEntryScreen> {
     );
   }
 }
+
