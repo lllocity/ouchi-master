@@ -87,31 +87,58 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   Widget _buildHeader(DateTime now) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFFF6B6B), Color(0xFFFFB347)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(24),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x33FF6B6B),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text('🏠 おうちマスター',
               style: TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.bold)),
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                        color: Color(0x44000000),
+                        offset: Offset(1, 1),
+                        blurRadius: 3),
+                  ])),
           const Spacer(),
-          Text('${now.year}年${now.month}月',
-              style: const TextStyle(fontSize: 18)),
+          Text('${now.month}月',
+              style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold)),
           const SizedBox(width: 4),
           IconButton(
-            icon: const Icon(Icons.history, size: 28),
+            icon: const Icon(Icons.history, size: 30, color: Colors.white),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (_) => const HistoryScreen()),
+              MaterialPageRoute(builder: (_) => const HistoryScreen()),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.settings_outlined, size: 28),
+            icon: const Icon(Icons.settings_outlined,
+                size: 30, color: Colors.white),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (_) => const SettingsScreen()),
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
             ),
           ),
         ],
