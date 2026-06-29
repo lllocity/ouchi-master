@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers.dart';
 import '../chore_entry/chore_entry_screen.dart';
+import '../history/history_screen.dart';
 import '../settings/settings_screen.dart';
 import 'widgets/child_point_panel.dart';
 
@@ -95,6 +96,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           const Spacer(),
           Text('${now.year}年${now.month}月',
               style: const TextStyle(fontSize: 16)),
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => const HistoryScreen()),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () => Navigator.push(
