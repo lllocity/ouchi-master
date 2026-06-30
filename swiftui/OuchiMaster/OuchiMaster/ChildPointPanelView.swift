@@ -16,11 +16,12 @@ struct ChildPointPanelView: View {
         let monthStart  = cal.date(from: cal.dateComponents([.year, .month], from: now))!
         let lastStart   = cal.date(byAdding: .month, value: -1, to: monthStart)!
 
+        let nextMonthStart = cal.date(byAdding: .month, value: 1, to: monthStart)!
         _currentMonthLogs = FetchRequest(
             sortDescriptors: [SortDescriptor(\.recordedAt, order: .reverse)],
             predicate: NSPredicate(
-                format: "child == %@ AND deletedAt == nil AND recordedAt >= %@",
-                child, monthStart as CVarArg
+                format: "child == %@ AND deletedAt == nil AND recordedAt >= %@ AND recordedAt < %@",
+                child, monthStart as CVarArg, nextMonthStart as CVarArg
             )
         )
         _lastMonthLogs = FetchRequest(
