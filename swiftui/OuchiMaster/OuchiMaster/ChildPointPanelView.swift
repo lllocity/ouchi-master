@@ -1,0 +1,121 @@
+import SwiftUI
+import ConfettiSwiftUI
+
+struct ChildPointPanelView: View {
+    let child: Child
+
+    @FetchRequest private var currentMonthLogs: FetchedResults<ActivityLog>
+    @FetchRequest private var lastMonthLogs:    FetchedResults<ActivityLog>
+    @State private var confettiCounter = 0
+    @State private var prevPoints: Int? = nil
+
+    init(child: Child) {
+        self.child = child
+        let cal = Calendar.current
+        let now = Date()
+        let monthStart  = cal.date(from: cal.dateComponents([.year, .month], from: now))!
+        let lastStart   = cal.date(byAdding: .month, value: -1, to: monthStart)!
+
+        _currentMonthLogs = FetchRequest(
+            sortDescriptors: [SortDescriptor(\.recordedAt, order: .reverse)],
+            predicate: NSPredicate(
+                format: "child == %@ AND deletedAt == nil AND recordedAt >= %@",
+                child, monthStart as CVarArg
+            )
+        )
+        _lastMonthLogs = FetchRequest(
+            sortDescriptors: [],
+            predicate: NSPredicate(
+                format: "child == %@ AND deletedAt == nil AND recordedAt >= %@ AND recordedAt < %@",
+                child, lastStart as CVarArg, monthStart as CVarArg
+            )
+        )
+    }
+
+    var childColor: Color { Color(hex: child.color ?? "9B59B6") }
+    var currentPoints: Int { currentMonthLogs.reduce(0) { $0 + Int($1.points) } }
+    var lastMonthPoints: Int { lastMonthLogs.reduce(0) { $0 + Int($1.points) } }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(child.name ?? "")
+                    .font(.system(size: 28, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom, 8)
+
+                Text("\(currentPoints)")
+                    .font(.system(size: 52, weight: .bold))
+                    .foregroundStyle(childColor)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .contentTransition(.numericText())
+                    .animation(.spring(response: 0.35, dampingFraction: 0.7), value: currentPoints)
+                    .confettiCannon(counter: $confettiCounter, colors: [
+                        .pink, .orange, .yellow, .green, .blue, .purple
+                    ])
+
+                Text("今月のごうけい")
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                if lastMonthPoints > 0 {
+                    Text("先月は \(lastMonthPoints)P だったよ！おつかれさま 🎉")
+                        .font(.system(size: 13))
+                        .italic()
+                        .foregroundStyle(childColor.opacity(0.7))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 4)
+                }
+
+                Divider().padding(.vertical, 12)
+
+                Text("📋 今月のきろく")
+                    .font(.system(size: 17, weight: .bold))
+                    .padding(.bottom, 4)
+
+                ForEach(currentMonthLogs) { log in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(log.choreName ?? "")
+                                .font(.system(size: 14))
+                            Text(log.recordedAt.map { formatDate($0) } ?? "")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        let pts = log.points
+                        Text("\(pts >= 0 ? "+" : "")\(pts)P")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(pts < 0 ? Color.red : Color.green)
+                    }
+                    .padding(.vertical, 4)
+                    Divider()
+                }
+            }
+            .padding(16)
+        }
+        .background(childColor.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(childColor, lineWidth: 2)
+        )
+        .padding(8)
+        .onAppear { prevPoints = currentPoints }
+        .onChange(of: currentPoints) { newValue in
+            if let prev = prevPoints, newValue > prev {
+                confettiCounter += 1
+            }
+            prevPoints = newValue
+        }
+    }
+
+    func formatDate(_ date: Date) -> String {
+        let cal = Calendar.current
+        let m = cal.component(.month,  from: date)
+        let d = cal.component(.day,    from: date)
+        let h = cal.component(.hour,   from: date)
+        return "\(m)/\(d) \(h)時"
+    }
+}
