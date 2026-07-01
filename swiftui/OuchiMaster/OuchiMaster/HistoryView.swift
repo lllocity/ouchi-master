@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreData
 
-private struct MonthKey: Identifiable, Comparable {
+fileprivate struct MonthKey: Identifiable, Comparable {
     let year: Int
     let month: Int
     var id: String { "\(year)-\(month)" }
