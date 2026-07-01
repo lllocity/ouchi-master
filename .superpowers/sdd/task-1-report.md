@@ -51,6 +51,13 @@ Message: `feat: add Core Data schema, seed data, and app scaffolding for SwiftUI
 - Extensions/Color+Hex.swift ✓
 - ContentView.swift stub ✓
 
+## Fix Round 1
+- Fix 1: IPHONEOS_DEPLOYMENT_TARGET → 16.0, SWIFT_VERSION → 5.9
+- Fix 2: Reverted app/ Flutter changes (bundle ID, Package.resolved files)
+- Fix 3: Core Data optionals corrected (all non-optional except deletedAt)
+- Fix 4: progress.md Task 1 marked complete
+- Commit: 19d2c10
+
 ## Concerns / Deviations
 
 **Note: project.pbxproj not modified.** The new Swift files (SeedData.swift, Extensions/Color+Hex.swift, DashboardView.swift, ChoreEntryView.swift, HistoryView.swift, SettingsView.swift, Notification+Names.swift) are on disk but NOT yet referenced in `OuchiMaster.xcodeproj/project.pbxproj`. The user must add them manually in Xcode (drag into project navigator) or via `xcodebuild` tooling. This is consistent with the task instruction "DO NOT modify project.pbxproj — the user will add new files to Xcode manually."
