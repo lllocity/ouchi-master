@@ -20,7 +20,7 @@ struct HistoryView: View {
         sortDescriptors: [SortDescriptor(\.createdAt)]
     ) private var children: FetchedResults<Child>
 
-    var groupedByMonth: [(key: MonthKey, logs: [ActivityLog])] {
+    fileprivate var groupedByMonth: [(key: MonthKey, logs: [ActivityLog])] {
         let cal = Calendar.current
         var groups: [String: (key: MonthKey, logs: [ActivityLog])] = [:]
         for log in logs {
