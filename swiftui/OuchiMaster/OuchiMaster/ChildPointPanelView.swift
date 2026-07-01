@@ -52,7 +52,7 @@ struct ChildPointPanelView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .contentTransition(.numericText())
                     .animation(.spring(response: 0.35, dampingFraction: 0.7), value: currentPoints)
-                    .confettiCannon(counter: $confettiCounter, colors: [
+                    .confettiCannon(trigger: $confettiCounter, colors: [
                         .pink, .orange, .yellow, .green, .blue, .purple
                     ])
 

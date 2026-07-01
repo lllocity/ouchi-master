@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreData
 
-fileprivate struct MonthKey: Identifiable, Comparable {
+struct MonthKey: Identifiable, Comparable {
     let year: Int
     let month: Int
     var id: String { "\(year)-\(month)" }
@@ -20,7 +20,7 @@ struct HistoryView: View {
         sortDescriptors: [SortDescriptor(\.createdAt)]
     ) private var children: FetchedResults<Child>
 
-    fileprivate var groupedByMonth: [(key: MonthKey, logs: [ActivityLog])] {
+    private var groupedByMonth: [(key: MonthKey, logs: [ActivityLog])] {
         let cal = Calendar.current
         var groups: [String: (key: MonthKey, logs: [ActivityLog])] = [:]
         for log in logs {
