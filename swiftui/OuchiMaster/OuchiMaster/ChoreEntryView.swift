@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 private let categoryColors: [String: Color] = [
     "ごはん":   Color(hex: "FF8C69"),

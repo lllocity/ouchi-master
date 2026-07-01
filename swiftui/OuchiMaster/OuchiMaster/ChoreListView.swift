@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 struct ChoreListView: View {
     let child: Child

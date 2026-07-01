@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 private let childColorPalette = ["#E74C3C", "#3498DB", "#2ECC71", "#9B59B6"]
 

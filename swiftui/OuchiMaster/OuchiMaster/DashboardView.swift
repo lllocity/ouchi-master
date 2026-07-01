@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 struct DashboardView: View {
     @Environment(\.managedObjectContext) private var ctx

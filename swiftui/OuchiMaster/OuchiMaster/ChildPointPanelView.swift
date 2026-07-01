@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 import ConfettiSwiftUI
 
 struct ChildPointPanelView: View {
