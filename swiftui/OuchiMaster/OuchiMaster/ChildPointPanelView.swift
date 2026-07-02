@@ -52,56 +52,56 @@ struct ChildPointPanelView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text(child.name ?? "")
-                    .font(.system(size: 28, weight: .bold))
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom, 8)
-
-                Text("\(currentPoints)")
-                    .font(.system(size: 52, weight: .bold))
-                    .foregroundStyle(childColor)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .contentTransition(.numericText())
-                    .animation(.spring(response: 0.35, dampingFraction: 0.7), value: currentPoints)
-                    .confettiCannon(trigger: $confettiCounter, colors: [
-                        .pink, .orange, .yellow, .green, .blue, .purple
-                    ])
-
-                Text("今月のごうけい")
-                    .font(.system(size: 15))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-
-                if lastMonthPoints > 0 {
-                    Text("先月は \(lastMonthPoints)P だったよ！おつかれさま 🎉")
-                        .font(.system(size: 13))
-                        .italic()
-                        .foregroundStyle(childColor.opacity(0.7))
+                // ポイントエリアを白い内側カードで包む
+                VStack(spacing: 0) {
+                    Text(child.name ?? "")
+                        .font(.system(size: 28, weight: .bold))
                         .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 4)
-                }
-
-                // きろくエリアを白い内側カードで包む
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("今月のきろく")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(childColor)
-                        .padding(.horizontal, 12)
-                        .padding(.top, 12)
                         .padding(.bottom, 8)
 
-                    ForEach(currentMonthLogs) { log in
-                        Divider().padding(.horizontal, 12)
-                        ActivityLogRowView(
-                            log: log,
-                            categoryEmoji: categoryEmojiMap[log.choreName ?? ""]
-                        )
-                        .padding(.horizontal, 12)
+                    Text("\(currentPoints)")
+                        .font(.system(size: 52, weight: .bold))
+                        .foregroundStyle(childColor)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.35, dampingFraction: 0.7), value: currentPoints)
+                        .confettiCannon(trigger: $confettiCounter, colors: [
+                            .pink, .orange, .yellow, .green, .blue, .purple
+                        ])
+
+                    Text("今月のごうけい")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+
+                    if lastMonthPoints > 0 {
+                        Text("先月は \(lastMonthPoints)P だったよ！おつかれさま 🎉")
+                            .font(.system(size: 13))
+                            .italic()
+                            .foregroundStyle(childColor.opacity(0.7))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.top, 4)
                     }
                 }
+                .padding(16)
                 .background(Color(.systemBackground).opacity(0.8))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .padding(.top, 12)
+
+                // きろくエリア
+                Text("今月のきろく")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(childColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 14)
+                    .padding(.bottom, 6)
+
+                ForEach(currentMonthLogs) { log in
+                    ActivityLogRowView(
+                        log: log,
+                        categoryEmoji: categoryEmojiMap[log.choreName ?? ""]
+                    )
+                    Divider()
+                }
             }
             .padding(12)
         }
