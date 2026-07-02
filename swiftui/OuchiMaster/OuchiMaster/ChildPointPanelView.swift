@@ -52,16 +52,17 @@ struct ChildPointPanelView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                // ポイントエリアを白い内側カードで包む
+                // ポイントエリア（子どもカラー背景・白文字）
                 VStack(spacing: 0) {
                     Text(child.name ?? "")
                         .font(.system(size: 28, weight: .bold))
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.bottom, 8)
 
                     Text("\(currentPoints)")
                         .font(.system(size: 52, weight: .bold))
-                        .foregroundStyle(childColor)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .contentTransition(.numericText())
                         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: currentPoints)
@@ -71,20 +72,20 @@ struct ChildPointPanelView: View {
 
                     Text("今月のごうけい")
                         .font(.system(size: 15))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.white.opacity(0.8))
                         .frame(maxWidth: .infinity, alignment: .center)
 
                     if lastMonthPoints > 0 {
                         Text("先月は \(lastMonthPoints)P だったよ！おつかれさま 🎉")
                             .font(.system(size: 13))
                             .italic()
-                            .foregroundStyle(childColor.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.75))
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.top, 4)
                     }
                 }
                 .padding(16)
-                .background(.ultraThinMaterial)
+                .background(childColor)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 // きろくエリア
@@ -105,7 +106,7 @@ struct ChildPointPanelView: View {
             }
             .padding(12)
         }
-        .background(childColor.opacity(0.18))
+        .background(childColor.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
