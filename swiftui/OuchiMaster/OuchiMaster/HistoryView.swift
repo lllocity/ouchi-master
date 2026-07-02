@@ -20,6 +20,18 @@ struct HistoryView: View {
         sortDescriptors: [SortDescriptor(\.createdAt)]
     ) private var children: FetchedResults<Child>
 
+    @FetchRequest(sortDescriptors: []) private var templates: FetchedResults<ChoreTemplate>
+
+    private var categoryEmojiMap: [String: String] {
+        Dictionary(
+            templates.compactMap { t -> (String, String)? in
+                guard let name = t.name, let emoji = t.category?.emoji else { return nil }
+                return (name, emoji)
+            },
+            uniquingKeysWith: { first, _ in first }
+        )
+    }
+
     private var groupedByMonth: [(key: MonthKey, logs: [ActivityLog])] {
         let cal = Calendar.current
         var groups: [String: (key: MonthKey, logs: [ActivityLog])] = [:]
@@ -47,7 +59,8 @@ struct HistoryView: View {
                                 year: group.key.year,
                                 month: group.key.month,
                                 logs: group.logs,
-                                children: Array(children)
+                                children: Array(children),
+                                categoryEmojiMap: categoryEmojiMap
                             )
                         }
                     }
@@ -65,6 +78,7 @@ private struct MonthCard: View {
     let month: Int
     let logs: [ActivityLog]
     let children: [Child]
+    let categoryEmojiMap: [String: String]
     @State private var expanded = false
 
     var childMap: [NSManagedObjectID: Child] {
@@ -112,26 +126,14 @@ private struct MonthCard: View {
             if expanded {
                 Divider().padding(.horizontal, 16)
                 ForEach(logs) { log in
-                    let neg   = log.points < 0
                     let child = log.child.flatMap { childMap[$0.objectID] }
-                    let color = Color(hex: child?.color ?? "888888")
-                    HStack {
-                        Text(log.recordedAt.map { formatDate($0) } ?? "")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.secondary)
-                            .frame(width: 90, alignment: .leading)
-                        Text(log.choreName ?? "")
-                            .font(.system(size: 15))
-                        Spacer()
-                        Text("\(neg ? "" : "+")\(log.points)P")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundStyle(neg ? .red : .green)
-                        Text(child?.name ?? "?")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(color)
-                    }
+                    ActivityLogRowView(
+                        log: log,
+                        categoryEmoji: categoryEmojiMap[log.choreName ?? ""],
+                        childName: child?.name,
+                        childColor: Color(hex: child?.color ?? "888888")
+                    )
                     .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
                     Divider().padding(.horizontal, 16)
                 }
                 .padding(.bottom, 8)
@@ -142,11 +144,4 @@ private struct MonthCard: View {
         .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
     }
 
-    func formatDate(_ date: Date) -> String {
-        let cal = Calendar.current
-        let m = cal.component(.month, from: date)
-        let d = cal.component(.day,   from: date)
-        let h = cal.component(.hour,  from: date)
-        return "\(m)/\(d) \(h)時"
-    }
 }
