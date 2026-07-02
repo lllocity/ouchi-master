@@ -7,8 +7,19 @@ struct ChildPointPanelView: View {
 
     @FetchRequest private var currentMonthLogs: FetchedResults<ActivityLog>
     @FetchRequest private var lastMonthLogs:    FetchedResults<ActivityLog>
+    @FetchRequest(sortDescriptors: []) private var templates: FetchedResults<ChoreTemplate>
     @State private var confettiCounter = 0
     @State private var prevPoints: Int? = nil
+
+    private var categoryEmojiMap: [String: String] {
+        Dictionary(
+            templates.compactMap { t -> (String, String)? in
+                guard let name = t.name, let emoji = t.category?.emoji else { return nil }
+                return (name, emoji)
+            },
+            uniquingKeysWith: { first, _ in first }
+        )
+    }
 
     init(child: Child) {
         self.child = child
@@ -77,21 +88,26 @@ struct ChildPointPanelView: View {
                     .padding(.bottom, 4)
 
                 ForEach(currentMonthLogs) { log in
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(log.choreName ?? "")
-                                .font(.system(size: 14))
+                    HStack(alignment: .center) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 4) {
+                                if let emoji = categoryEmojiMap[log.choreName ?? ""] {
+                                    Text(emoji).font(.system(size: 16))
+                                }
+                                Text(log.choreName ?? "")
+                                    .font(.system(size: 17))
+                            }
                             Text(log.recordedAt.map { formatDate($0) } ?? "")
-                                .font(.system(size: 12))
+                                .font(.system(size: 14))
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
                         let pts = log.points
                         Text("\(pts >= 0 ? "+" : "")\(pts)P")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(.system(size: 17, weight: .bold))
                             .foregroundStyle(pts < 0 ? Color.red : Color.green)
                     }
-                    .padding(.vertical, 4)
+                    .padding(.vertical, 6)
                     Divider()
                 }
             }
