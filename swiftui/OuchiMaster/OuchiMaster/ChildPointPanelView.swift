@@ -85,7 +85,8 @@ struct ChildPointPanelView: View {
 
                 Text("📋 今月のきろく")
                     .font(.system(size: 17, weight: .bold))
-                    .padding(.bottom, 4)
+
+                Divider()
 
                 ForEach(currentMonthLogs) { log in
                     ActivityLogRowView(
