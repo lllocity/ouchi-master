@@ -89,7 +89,7 @@ private struct MonthCard: View {
                 withAnimation(.easeInOut(duration: 0.2)) { expanded.toggle() }
             } label: {
                 HStack {
-                    Text("\(year)年\(month)月")
+                    Text("\(year, format: .number.grouping(.never))年\(month)月")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(.primary)
                     Spacer()
