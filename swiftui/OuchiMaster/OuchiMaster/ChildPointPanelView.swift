@@ -84,7 +84,7 @@ struct ChildPointPanelView: View {
                     }
                 }
                 .padding(16)
-                .background(Color(.systemBackground).opacity(0.8))
+                .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 // きろくエリア
