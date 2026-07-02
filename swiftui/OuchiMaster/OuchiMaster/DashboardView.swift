@@ -133,22 +133,24 @@ struct PointToastView: View {
     let choreName: String
     let points: Int32
 
+    private var isPositive: Bool { points >= 0 }
+
     var body: some View {
-        VStack(spacing: 4) {
-            Text(childName)
-                .font(.system(size: 14, weight: .bold))
+        VStack(spacing: 6) {
+            Text(isPositive ? "🎉 \(childName)、すごい！" : "💦 \(childName)...")
+                .font(.system(size: 18, weight: .bold))
                 .foregroundStyle(.white)
-            Text(choreName)
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
-            Text("\(points >= 0 ? "+" : "")\(points)P")
-                .font(.system(size: 28, weight: .bold))
-                .foregroundStyle(points < 0 ? Color.red.opacity(0.9) : Color.yellow)
+            Text(isPositive ? "\(choreName) できたね！" : "\(choreName)")
+                .font(.system(size: 15))
+                .foregroundStyle(.white.opacity(0.85))
+            Text(isPositive ? "+\(points)P ゲット！" : "\(points)P")
+                .font(.system(size: 32, weight: .heavy))
+                .foregroundStyle(isPositive ? Color.yellow : Color.red.opacity(0.9))
         }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 16)
-        .background(Color.black.opacity(0.75))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(radius: 8)
+        .padding(.horizontal, 28)
+        .padding(.vertical, 18)
+        .background(Color.black.opacity(0.8))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .shadow(radius: 10)
     }
 }
