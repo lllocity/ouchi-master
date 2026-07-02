@@ -26,7 +26,8 @@ struct ChoreEntryView: View {
                         .font(.system(size: 26, weight: .bold))
                         .padding(.bottom, 20)
 
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
+                    HStack(spacing: 16) {
+                        Spacer(minLength: 0)
                         ForEach(children) { child in
                             let color    = Color(hex: child.color ?? "9B59B6")
                             let selected = selectedChild?.objectID == child.objectID
@@ -51,6 +52,7 @@ struct ChoreEntryView: View {
                                     )
                             }
                         }
+                        Spacer(minLength: 0)
                     }
 
                     if let child = selectedChild {
@@ -59,7 +61,8 @@ struct ChoreEntryView: View {
                             .padding(.top, 40)
                             .padding(.bottom, 20)
 
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
+                        HStack(spacing: 16) {
+                            Spacer(minLength: 0)
                             ForEach(categories) { category in
                                 let color = categoryColors[category.name ?? ""] ?? Color(hex: "90CAF9")
                                 Button {
@@ -78,6 +81,7 @@ struct ChoreEntryView: View {
                                     .shadow(color: color.opacity(0.4), radius: 8, y: 4)
                                 }
                             }
+                            Spacer(minLength: 0)
                         }
                     }
                 }
