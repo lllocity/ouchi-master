@@ -87,7 +87,7 @@ struct ChoreEntryView: View {
                 }
                 .padding(.horizontal, 32)
                 .padding(.top, 48)
-                .padding(.bottom, 24)
+                .padding(.bottom, 48)
             }
             .navigationTitle("できたよモード")
             .navigationBarTitleDisplayMode(.inline)
