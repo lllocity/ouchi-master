@@ -105,7 +105,7 @@ struct ChildPointPanelView: View {
             }
             .padding(12)
         }
-        .background(childColor.opacity(0.08))
+        .background(childColor.opacity(0.18))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
