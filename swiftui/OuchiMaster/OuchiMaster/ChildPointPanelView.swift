@@ -81,24 +81,29 @@ struct ChildPointPanelView: View {
                         .padding(.top, 4)
                 }
 
-                Divider().padding(.vertical, 12)
+                // きろくエリアを白い内側カードで包む
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("今月のきろく")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(childColor)
+                        .padding(.horizontal, 12)
+                        .padding(.top, 12)
+                        .padding(.bottom, 8)
 
-                Text("今月のきろく")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(childColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 4)
-                    .padding(.bottom, 2)
-
-                ForEach(currentMonthLogs) { log in
-                    ActivityLogRowView(
-                        log: log,
-                        categoryEmoji: categoryEmojiMap[log.choreName ?? ""]
-                    )
-                    Divider()
+                    ForEach(currentMonthLogs) { log in
+                        Divider().padding(.horizontal, 12)
+                        ActivityLogRowView(
+                            log: log,
+                            categoryEmoji: categoryEmojiMap[log.choreName ?? ""]
+                        )
+                        .padding(.horizontal, 12)
+                    }
                 }
+                .background(Color(.systemBackground).opacity(0.8))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(.top, 12)
             }
-            .padding(16)
+            .padding(12)
         }
         .background(childColor.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 16))
