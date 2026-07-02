@@ -84,7 +84,7 @@ struct ChildPointPanelView: View {
                 Divider().padding(.vertical, 12)
 
                 Text("今月のきろく")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(childColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 4)
