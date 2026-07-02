@@ -61,8 +61,11 @@ struct ChoreEntryView: View {
                             .padding(.top, 40)
                             .padding(.bottom, 20)
 
-                        HStack(spacing: 16) {
-                            Spacer(minLength: 0)
+                        LazyVGrid(
+                            columns: [GridItem(.adaptive(minimum: 150, maximum: 180), spacing: 16)],
+                            alignment: .center,
+                            spacing: 16
+                        ) {
                             ForEach(categories) { category in
                                 let color = categoryColors[category.name ?? ""] ?? Color(hex: "90CAF9")
                                 Button {
@@ -75,19 +78,19 @@ struct ChoreEntryView: View {
                                             .font(.system(size: 20, weight: .bold))
                                             .foregroundStyle(.white)
                                     }
-                                    .frame(width: 160, height: 100)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 100)
                                     .background(color)
                                     .clipShape(RoundedRectangle(cornerRadius: 20))
                                     .shadow(color: color.opacity(0.4), radius: 8, y: 4)
                                 }
                             }
-                            Spacer(minLength: 0)
                         }
                     }
                 }
                 .padding(.horizontal, 32)
                 .padding(.top, 48)
-                .padding(.bottom, 48)
+                .padding(.bottom, 24)
             }
             .navigationTitle("できたよモード")
             .navigationBarTitleDisplayMode(.inline)
