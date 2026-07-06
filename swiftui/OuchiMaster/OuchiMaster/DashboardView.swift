@@ -74,11 +74,11 @@ struct DashboardView: View {
             }
             .ignoresSafeArea(edges: .top)
             .toolbar(.hidden, for: .navigationBar)
-            .onLongPressGesture(minimumDuration: 3, pressing: { pressing in
+            .onLongPressGesture(minimumDuration: 2, pressing: { pressing in
                 withAnimation(.easeInOut(duration: 0.2)) { isPressing = pressing }
                 if pressing {
-                    withAnimation(.linear(duration: 3)) { pressingProgress = 1.0 }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
+                    withAnimation(.linear(duration: 2)) { pressingProgress = 1.0 }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
                         if isPressing {
                             withAnimation(.spring()) { isReadyToLaunch = true }
                         }
