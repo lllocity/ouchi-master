@@ -38,9 +38,16 @@ private struct ChildLogAdminSection: View {
     @FetchRequest(sortDescriptors: []) private var templates: FetchedResults<ChoreTemplate>
 
     init(child: Child) {
+        let cal = Calendar.current
+        let now = Date()
+        let thisMonthStart = cal.date(from: cal.dateComponents([.year, .month], from: now))!
+        let lastMonthStart = cal.date(byAdding: .month, value: -1, to: thisMonthStart)!
         _logs = FetchRequest(
             sortDescriptors: [SortDescriptor(\.recordedAt, order: .reverse)],
-            predicate: NSPredicate(format: "child == %@", child)
+            predicate: NSPredicate(
+                format: "child == %@ AND recordedAt >= %@",
+                child, lastMonthStart as CVarArg
+            )
         )
     }
 
