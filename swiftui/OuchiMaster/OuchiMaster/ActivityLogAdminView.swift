@@ -67,12 +67,13 @@ private struct ChildLogAdminSection: View {
                 )
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     if log.deletedAt == nil {
-                        Button(role: .destructive) {
+                        Button {
                             log.deletedAt = Date()
                             try? ctx.save()
                         } label: {
                             Label("削除", systemImage: "trash")
                         }
+                        .tint(.red)
                     } else {
                         Button {
                             log.deletedAt = nil
