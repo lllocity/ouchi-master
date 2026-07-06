@@ -265,7 +265,7 @@
 				DEVELOPMENT_TEAM = V49MN6T826;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "\U304a\U3046\U3061\U30de\U30b9\U30bf\U30fc";
+				INFOPLIST_KEY_CFBundleDisplayName = "おうちマスター";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -298,7 +298,7 @@
 				DEVELOPMENT_TEAM = V49MN6T826;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "\U304a\U3046\U3061\U30de\U30b9\U30bf\U30fc";
+				INFOPLIST_KEY_CFBundleDisplayName = "おうちマスター";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
