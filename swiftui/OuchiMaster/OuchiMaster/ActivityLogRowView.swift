@@ -10,7 +10,7 @@ func formatLogDate(_ date: Date) -> String {
 }
 
 struct ActivityLogRowView: View {
-    let log: ActivityLog
+    @ObservedObject var log: ActivityLog
     let categoryEmoji: String?
     var childName: String? = nil
     var childColor: Color? = nil
