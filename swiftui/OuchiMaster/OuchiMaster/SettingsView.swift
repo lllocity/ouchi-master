@@ -40,6 +40,12 @@ struct SettingsView: View {
                     CategoryToggleSection(category: category)
                 }
             }
+
+            Section("きろくの管理") {
+                NavigationLink("きろくを削除・復元する") {
+                    ActivityLogAdminView()
+                }
+            }
         }
         .navigationTitle("設定")
         .sheet(isPresented: $showAddChild) {

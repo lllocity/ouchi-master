@@ -9,6 +9,8 @@ struct DashboardView: View {
     ) private var children: FetchedResults<Child>
 
     @State private var isPressing = false
+    @State private var isReadyToLaunch = false
+    @State private var pressingProgress: CGFloat = 0.0
     @State private var showChoreEntry = false
     @State private var showHistory = false
     @State private var showSettings = false
@@ -34,9 +36,25 @@ struct DashboardView: View {
                     Color.black.opacity(0.3)
                         .ignoresSafeArea()
                         .overlay {
-                            Text("そのまま持ちつづけて…")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundStyle(.white)
+                            VStack(spacing: 20) {
+                                ZStack {
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.3), lineWidth: 6)
+                                        .frame(width: 72, height: 72)
+                                    Circle()
+                                        .trim(from: 0, to: pressingProgress)
+                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                                        .frame(width: 72, height: 72)
+                                        .rotationEffect(.degrees(-90))
+                                    Image(systemName: isReadyToLaunch ? "checkmark" : "hand.point.up.left.fill")
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundStyle(.white)
+                                }
+                                Text(isReadyToLaunch ? "はなしてOK！🎉" : "そのまま持ちつづけて…")
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .animation(.none, value: isReadyToLaunch)
+                            }
                         }
                 }
 
@@ -56,10 +74,23 @@ struct DashboardView: View {
             }
             .ignoresSafeArea(edges: .top)
             .toolbar(.hidden, for: .navigationBar)
-            .onLongPressGesture(minimumDuration: 3, pressing: { pressing in
+            .onLongPressGesture(minimumDuration: 2, pressing: { pressing in
                 withAnimation(.easeInOut(duration: 0.2)) { isPressing = pressing }
+                if pressing {
+                    withAnimation(.linear(duration: 2)) { pressingProgress = 1.0 }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                        if isPressing {
+                            withAnimation(.spring()) { isReadyToLaunch = true }
+                        }
+                    }
+                } else {
+                    withAnimation(.easeOut(duration: 0.15)) { pressingProgress = 0.0 }
+                    isReadyToLaunch = false
+                }
             }) {
                 isPressing = false
+                isReadyToLaunch = false
+                pressingProgress = 0.0
                 showChoreEntry = true
             }
             .fullScreenCover(isPresented: $showChoreEntry) {
